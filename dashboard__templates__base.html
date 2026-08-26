@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}NetGuard AI{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="scanline"></div>
+  <header class="topbar">
+    <a href="/" class="brand">
+      <span class="brand-mark">
+        <span class="pulse-dot" id="global-pulse"></span>
+      </span>
+      <span class="brand-text">NetGuard<span class="brand-accent">AI</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/" class="nav-link {% if active == 'dashboard' %}active{% endif %}">Overview</a>
+      <a href="/alerts" class="nav-link {% if active == 'alerts' %}active{% endif %}">Alert Log</a>
+      <a href="https://github.com/" target="_blank" rel="noopener" class="nav-link nav-link--ghost">GitHub ↗</a>
+    </nav>
+    <div class="status-chip" id="model-status">
+      <span class="dot"></span> <span id="model-status-text">checking model…</span>
+    </div>
+  </header>
+
+  <main class="page">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <span>NetGuard AI · MIT Licensed · Local ML-based network intrusion detection</span>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

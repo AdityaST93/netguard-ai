@@ -1,0 +1,10 @@
+Flask==3.0.3
+Flask-Cors==4.0.1
+scikit-learn==1.5.1
+pandas==2.2.2
+numpy==1.26.4
+joblib==1.4.2
+scapy==2.5.0
+python-dotenv==1.0.1
+gunicorn==22.0.0
+pytest==8.2.2

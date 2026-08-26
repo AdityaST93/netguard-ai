@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  netguard-ai:
+    build: .
+    image: netguard-ai:latest
+    container_name: netguard-ai
+    ports:
+      - "5000:5000"
+    environment:
+      - DEBUG=False
+      - AUTO_BLOCK_ENABLED=False
+      - ANOMALY_THRESHOLD=0.65
+      - BLOCK_AFTER_N_ALERTS=3
+    volumes:
+      - netguard-data:/app/data
+      - netguard-models:/app/models
+    restart: unless-stopped
+
+volumes:
+  netguard-data:
+  netguard-models:

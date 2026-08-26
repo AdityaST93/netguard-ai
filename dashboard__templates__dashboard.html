@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}NetGuard AI — Overview{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Network Traffic → Analysis → ML Detection → Alert → Response</p>
+    <h1>Watching your network,<br>one flow at a time.</h1>
+    <p class="hero-sub">NetGuard AI classifies live and simulated traffic against a trained model,
+      raises real-time alerts on suspicious behavior, and can automatically contain repeat offenders.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" id="simulate-btn">Run traffic simulation</button>
+      <span class="hero-hint" id="simulate-hint">Replays sample_traffic.csv through the live detection pipeline</span>
+    </div>
+  </div>
+  <div class="hero-radar" aria-hidden="true">
+    <svg viewBox="0 0 240 240" class="radar-svg">
+      <circle cx="120" cy="120" r="110" class="radar-ring"/>
+      <circle cx="120" cy="120" r="75" class="radar-ring"/>
+      <circle cx="120" cy="120" r="40" class="radar-ring"/>
+      <line x1="120" y1="10" x2="120" y2="230" class="radar-cross"/>
+      <line x1="10" y1="120" x2="230" y2="120" class="radar-cross"/>
+      <g class="radar-sweep-group">
+        <path d="M120,120 L120,10 A110,110 0 0,1 197.8,42.2 Z" class="radar-sweep"/>
+      </g>
+      <circle cx="120" cy="120" r="3" class="radar-center"/>
+      <g id="radar-blips"></g>
+    </svg>
+  </div>
+</section>
+
+<section class="stats-grid" id="stats-grid">
+  <div class="stat-card">
+    <span class="stat-label">Events analyzed</span>
+    <span class="stat-value" id="stat-total">—</span>
+  </div>
+  <div class="stat-card stat-card--warn">
+    <span class="stat-label">Threats detected</span>
+    <span class="stat-value" id="stat-threats">—</span>
+  </div>
+  <div class="stat-card stat-card--danger">
+    <span class="stat-label">IPs blocked</span>
+    <span class="stat-value" id="stat-blocked">—</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Model status</span>
+    <span class="stat-value stat-value--sm" id="stat-model">—</span>
+  </div>
+</section>
+
+<section class="grid-two">
+  <div class="panel">
+    <div class="panel-header">
+      <h2>Live alert feed</h2>
+      <span class="panel-sub" id="alert-feed-count">0 alerts</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" id="alerts-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Source IP</th>
+            <th>Threat</th>
+            <th>Confidence</th>
+            <th>Severity</th>
+          </tr>
+        </thead>
+        <tbody id="alerts-tbody">
+          <tr class="empty-row"><td colspan="5">No alerts yet — run a simulation to see NetGuard in action.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <h2>Blocked sources</h2>
+      <span class="panel-sub" id="blocked-count">0 blocked</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" id="blocked-table">
+        <thead>
+          <tr>
+            <th>IP</th>
+            <th>Reason</th>
+            <th>Blocked at</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="blocked-tbody">
+          <tr class="empty-row"><td colspan="4">No blocked IPs.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="manual-block">
+      <h3>Manual response</h3>
+      <div class="manual-block-row">
+        <input type="text" id="manual-ip" placeholder="e.g. 198.51.100.23" class="text-input">
+        <button class="btn btn-secondary" id="manual-block-btn">Block IP</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-header">
+    <h2>Threat mix</h2>
+    <span class="panel-sub">By type, this session</span>
+  </div>
+  <div class="bar-chart" id="threat-bar-chart">
+    <p class="muted">No data yet.</p>
+  </div>
+</section>
+
+{% endblock %}
+{% block scripts %}
+<script>window.NETGUARD_PAGE = "dashboard";</script>
+{% endblock %}

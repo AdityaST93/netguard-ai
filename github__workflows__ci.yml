@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate demo dataset
+        run: python ml/generate_synthetic_data.py --rows 3000 --out data/sample_traffic.csv
+
+      - name: Run tests
+        run: pytest -v
+
+      - name: Smoke-test Flask app boot
+        run: |
+          python ml/train_model.py
+          python -c "from app import app; c = app.test_client(); r = c.get('/api/health'); assert r.status_code == 200; print(r.get_json())"
